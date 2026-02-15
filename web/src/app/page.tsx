@@ -8,6 +8,7 @@ import { NarrativeCard } from "@/components/NarrativeCard";
 export default function Home() {
   const [narratives, setNarratives] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const fetchNarratives = async () => {
     try {
@@ -24,11 +25,14 @@ export default function Home() {
   };
 
   useEffect(() => {
+    setMounted(true);
     fetchNarratives();
     // Refresh every 30s
     const interval = setInterval(fetchNarratives, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="relative min-h-screen">
