@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { PublicKey } from "@solana/web3.js";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NarrativeCard } from "@/components/NarrativeCard";
 
@@ -15,7 +16,13 @@ export default function Home() {
       const res = await fetch('/api/narratives');
       if (res.ok) {
         const data = await res.json();
-        setNarratives(data);
+        // Hydrate PublicKey strings back to objects
+        const hydratedData = data.map((n: any) => ({
+          ...n,
+          publicKey: new PublicKey(n.publicKey),
+          author: new PublicKey(n.author),
+        }));
+        setNarratives(hydratedData);
       }
     } catch (error) {
       console.error('Error fetching narratives:', error);
