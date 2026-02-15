@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@/lib/polyfills";
 import { SolanaProvider } from "@/components/SolanaProvider";
+import { OracleHeader } from "@/components/OracleHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SolanaProvider>
+          <OracleHeader />
           {children}
         </SolanaProvider>
       </body>

@@ -1,57 +1,133 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050505;
-  --foreground: #f0f0f0;
-  --accent-primary: #8b5cf6;
-  /* Violet */
-  --accent-secondary: #06b6d4;
-  /* Cyan */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Primary: Oracle Gold (Divine Authority) */
+  --primary: #D4AF37;
+  --primary-light: #F4CF57;
+  --primary-dark: #B8941F;
+
+  /* Secondary: Royal Purple (Imperial Wisdom) */
+  --secondary: #6A4C93;
+  --secondary-light: #8B6BB7;
+  --secondary-dark: #4A3570;
+
+  /* Accent: Oracle Fire (Prophecy Flame) */
+  --accent: #E85D75;
+  --accent-light: #FF7F9E;
+
+  /* Background: Obsidian Temple */
+  --background: #0A0A0F;
+  --surface: #16161D;
+  --surface-elevated: #1E1E28;
+
+  /* Text: Marble Inscription */
+  --text-primary: #F8F8FF;
+  --text-secondary: #C4C4D4;
+  --text-muted: #8B8B9B;
+
+  /* Borders: Silver Inlay */
+  --border: #2A2A35;
+  --border-strong: #3D3D4E;
+
+  /* Status Colors */
+  --success: #4ECDC4;
+  --warning: #FFD93D;
+  --error: #E85D75;
+
+  /* Prediction Market Colors */
+  --validates: #4ECDC4;
+  --challenges: #E85D75;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent-primary: var(--accent-primary);
-  --color-accent-secondary: var(--accent-secondary);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-light: var(--secondary-light);
+  --color-secondary-dark: var(--secondary-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-validates: var(--validates);
+  --color-challenges: var(--challenges);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text-primary);
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(106, 76, 147, 0.02) 0%, transparent 50%);
 }
 
 /* Glassmorphism Utility */
 .glass {
-  background: var(--glass-bg);
+  background: rgba(22, 22, 29, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: 1rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.glass:hover {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
-/* Subtle background glow */
-.bg-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+/* Oracle Animations */
+@keyframes flameShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.prophecy-flame {
+  background: linear-gradient(135deg,
+      var(--accent) 0%,
+      var(--primary) 50%,
+      var(--secondary) 100%);
+  background-size: 200% 200%;
+  animation: flameShift 3s ease infinite;
+}
+
+/* Utilities */
+.text-label {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }

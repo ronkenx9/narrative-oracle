@@ -36,18 +36,6 @@ export default function Home() {
     <div className="relative min-h-screen">
       <div className="bg-glow" />
 
-      <nav className="fixed top-0 z-50 w-full px-6 py-4">
-        <div className="mx-auto flex max-w-7xl items-center justify-between glass px-6 py-3">
-          <div className="text-xl font-bold tracking-tighter">
-            <span className="gradient-text">NARRATIVE</span> ORACLE
-          </div>
-          <div className="flex items-center gap-6 text-sm font-medium">
-            <Link href="#" className="hover:text-accent-secondary transition-colors">Signals</Link>
-            <Link href="#" className="hover:text-accent-secondary transition-colors">Predictions</Link>
-            {mounted && <WalletMultiButton className="!bg-white/5 !border !border-white/10 !rounded-xl !h-10 !text-sm hover:!bg-white/10" />}
-          </div>
-        </div>
-      </nav>
 
       {/* Main Landmark - Always rendered to satisfy A11y crawler */}
       <main id="main-content" className="mx-auto max-w-7xl px-6 pt-32 pb-20">
