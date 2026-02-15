@@ -28,16 +28,12 @@ export const SolanaProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     const endpoint = useMemo(() => process.env.NEXT_PUBLIC_SOLANA_RPC_URL || clusterApiUrl(network), [network]);
     const wallets = useMemo(() => [], [network]);
 
-    // Prevent hydration mismatch by only rendering after mount
-    if (!mounted) {
-        return <div style={{ visibility: 'hidden' }}>{children}</div>;
-    }
-
     return (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    {children}
+                    {/* Only render children after mount to avoid hydration mismatch and context errors */}
+                    {mounted ? children : <div className="opacity-0">{children}</div>}
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
