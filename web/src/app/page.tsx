@@ -1,15 +1,35 @@
+'use client';
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NarrativeCard } from "@/components/NarrativeCard";
 
-async function getNarratives() {
-  const res = await fetch('http://localhost:3000/api/narratives', { cache: 'no-store' });
-  if (!res.ok) return [];
-  return res.json();
-}
+export default function Home() {
+  const [narratives, setNarratives] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Home() {
-  const narratives: any[] = await getNarratives();
+  const fetchNarratives = async () => {
+    try {
+      const res = await fetch('/api/narratives');
+      if (res.ok) {
+        const data = await res.json();
+        setNarratives(data);
+      }
+    } catch (error) {
+      console.error('Error fetching narratives:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNarratives();
+    // Refresh every 30s
+    const interval = setInterval(fetchNarratives, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative min-h-screen">
       <div className="bg-glow" />
@@ -46,14 +66,22 @@ export default async function Home() {
 
         {/* Narrative Grid */}
         <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {narratives.length > 0 ? (
-            narratives.map((n) => (
-              <NarrativeCard key={n.publicKey} narrative={n} />
-            ))
+          {!loading ? (
+            narratives.length > 0 ? (
+              narratives.map((n) => (
+                <NarrativeCard key={n.publicKey} narrative={n} onUpdate={fetchNarratives} />
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center glass">
+                <div className="text-zinc-500 font-mono text-sm uppercase tracking-widest animate-pulse">
+                  Scanning for on-chain signals...
+                </div>
+              </div>
+            )
           ) : (
             <div className="col-span-full py-20 text-center glass">
               <div className="text-zinc-500 font-mono text-sm uppercase tracking-widest animate-pulse">
-                Scanning for on-chain signals...
+                Initializing Neural Mesh...
               </div>
             </div>
           )}
