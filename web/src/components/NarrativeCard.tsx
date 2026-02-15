@@ -19,7 +19,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
     const [amount, setAmount] = useState('0.1');
 
     const handleStake = async () => {
-        if (!publicKey) return alert('Please connect your wallet!');
+        if (!publicKey) return alert('Connect wallet to prophesy.');
         setIsStaking(true);
 
         try {
@@ -28,7 +28,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
                 { publicKey, signTransaction: (tx: any) => tx, signAllTransactions: (txs: any) => txs } as any,
                 { commitment: 'confirmed' }
             );
-            const program = new anchor.Program(idl as any, provider);
+            const program = new anchor.Program(idl as any, provider) as any;
 
             const tx = await program.methods
                 .validateNarrative(new anchor.BN(parseFloat(amount) * 1e9))
@@ -42,52 +42,95 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
             const signature = await sendTransaction(tx, connection);
             await connection.confirmTransaction(signature, 'confirmed');
 
-            alert('Staking successful!');
             if (onUpdate) onUpdate();
         } catch (error) {
-            console.error('Staking failed:', error);
-            alert('Staking failed. See console for details.');
+            console.error('Prophecy failed:', error);
+            alert('Prophecy failed to register.');
         } finally {
             setIsStaking(false);
         }
     };
 
-    return (
-        <div className="glass group p-6 transition-all hover:border-accent-primary/50 hover:bg-white/5">
-            <div className="mb-4 flex items-center justify-between">
-                <span className="text-xs font-bold tracking-widest text-zinc-500 uppercase">Confidence</span>
-                <span className="text-sm font-mono text-accent-secondary">{narrative.confidenceScore}%</span>
-            </div>
-            <h3 className="mb-3 text-xl font-bold leading-tight group-hover:text-accent-primary transition-colors">
-                {narrative.metadataUrl}
-            </h3>
-            <div className="mb-6">
-                <div className="text-xs text-zinc-500 mb-1">Total Staked</div>
-                <div className="text-lg font-mono">{(narrative.totalStaked / 1e9).toFixed(2)} SOL</div>
-            </div>
+    // Calculate confidence pillars (1-10 scale)
+    const confidenceLevel = Math.round(narrative.confidenceScore / 10);
+    const pillars = Array.from({ length: 10 }, (_, i) => i < confidenceLevel);
 
-            <div className="flex flex-col gap-3">
-                <div className="flex gap-2">
-                    <input
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent-primary"
-                        step="0.05"
-                        min="0.01"
-                    />
+    // Mock challenge data for now (program only tracks total stake)
+    const totalStaked = narrative.totalStaked / 1e9;
+    const validateRatio = 0.85; // Mock: 85% validates
+
+    return (
+        <div className="glass group relative overflow-hidden transition-all hover:border-primary/50">
+            {/* Marble Texture Overlay */}
+            <div className="absolute inset-0 bg-marble-texture opacity-30 pointer-events-none" />
+
+            <div className="relative p-6 z-10">
+                {/* Header: Confidence Pillars */}
+                <div className="mb-6 flex items-end justify-between">
+                    <div className="flex gap-1 h-8 items-end">
+                        {pillars.map((filled, i) => (
+                            <div
+                                key={i}
+                                className={`w-1.5 rounded-sm transition-all duration-500 ${filled ? 'bg-primary h-full shadow-[0_0_8px_rgba(212,175,55,0.4)]' : 'bg-border h-2'}`}
+                            />
+                        ))}
+                    </div>
+                    <span className="text-2xl font-mono font-bold text-primary">{narrative.confidenceScore}%</span>
+                </div>
+
+                {/* Title */}
+                <h3 className="mb-2 text-xl font-bold leading-tight text-text-primary group-hover:text-primary-light transition-colors">
+                    {narrative.metadataUrl}
+                </h3>
+
+                <div className="mb-6 text-xs text-text-muted flex gap-2">
+                    <span className="uppercase tracking-wider">Oracle ID:</span>
+                    <span className="font-mono text-secondary-light">{narrative.publicKey.toBase58().slice(0, 8)}</span>
+                </div>
+
+                {/* Prediction Market Bar */}
+                <div className="mb-6">
+                    <div className="flex justify-between text-[10px] uppercase font-bold tracking-widest mb-2">
+                        <span className="text-validates flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-full bg-validates" /> Validates
+                        </span>
+                        <span className="text-challenges flex items-center gap-1">
+                            Challenges <span className="w-2 h-2 rounded-full bg-challenges" />
+                        </span>
+                    </div>
+                    <div className="h-2 w-full rounded-full bg-surface-elevated overflow-hidden flex">
+                        <div style={{ width: `${validateRatio * 100}%` }} className="bg-validates h-full" />
+                        <div style={{ width: `${(1 - validateRatio) * 100}%` }} className="bg-challenges h-full" />
+                    </div>
+                    <div className="mt-2 text-right text-xs font-mono text-text-muted">
+                        Total Market: {totalStaked.toFixed(2)} SOL
+                    </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 p-3 bg-surface-elevated/50 rounded-temple border border-border/50">
+                    <div className="flex-1 flex items-center bg-surface rounded-lg px-3 border border-border focus-within:border-primary/50 transition-colors">
+                        <span className="text-xs text-primary font-mono mr-2">SOL</span>
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            className="w-full bg-transparent text-sm py-2 focus:outline-none font-mono"
+                            step="0.1"
+                        />
+                    </div>
                     <button
                         onClick={handleStake}
                         disabled={isStaking}
-                        className="glass px-4 py-2 text-sm font-bold hover:bg-accent-primary hover:text-white transition-all disabled:opacity-50"
+                        className="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg text-sm font-bold tracking-wide uppercase transition-all disabled:opacity-50 hover:shadow-oracle"
                     >
-                        {isStaking ? 'STAKING...' : 'STAKE'}
+                        {isStaking ? '...' : 'Stake'}
                     </button>
                 </div>
-                <div className="text-[10px] text-zinc-600 uppercase tracking-tighter">
-                    Author: {narrative.author.toBase58().slice(0, 4)}...{narrative.author.toBase58().slice(-4)}
-                </div>
             </div>
+
+            {/* Prophecy Flame Footer */}
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
     );
 };
