@@ -34,14 +34,14 @@ export const OracleHeader = () => {
                 </div>
 
                 <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-                    <Link href="#" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
+                    <Link href="/#proof" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
                         Prophecies
                     </Link>
-                    <Link href="#" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
+                    <Link href="/#council" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
                         Council
                     </Link>
-                    <Link href="#" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
-                        Proof
+                    <Link href="/validate" className="text-text-secondary hover:text-primary transition-colors uppercase tracking-wider text-xs">
+                        Validate
                     </Link>
                 </div>
 

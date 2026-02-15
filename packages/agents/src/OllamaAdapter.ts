@@ -22,14 +22,21 @@ export class OllamaAdapter {
     /**
      * Generate a completion for a given prompt
      */
-    async generate(prompt: string): Promise<string> {
+    async generate(optionsOrPrompt: string | { model?: string; prompt: string; format?: string }): Promise<string> {
+        const options = typeof optionsOrPrompt === 'string'
+            ? { prompt: optionsOrPrompt }
+            : optionsOrPrompt;
+
+        const modelToUse = options.model || this.model;
+
         try {
             const response = await fetch(`${this.baseUrl}/api/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    model: this.model,
-                    prompt: prompt,
+                    model: modelToUse,
+                    prompt: options.prompt,
+                    format: options.format,
                     stream: false
                 })
             });
