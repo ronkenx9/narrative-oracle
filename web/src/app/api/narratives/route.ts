@@ -22,8 +22,8 @@ const DEMO_NARRATIVES = [
         ]
     },
     {
-        publicKey: '3Xxx7K9zM2qN4pR5sT6uV7wX8yZ9aBcDeF1gH2iJ3kLmNoPqRsTuVwXyZaBcDeFgHi',
-        author: 'D4eF5gH6iJ7kL8mN9oP0qR1sT2uV3wX4yZ5aB6cD7e',
+        publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm6',
+        author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2B',
         metadataUrl: 'Solana Mobile Stack v2 Explosion',
         confidenceScore: 85,
         totalStaked: 890.2,
@@ -39,8 +39,8 @@ const DEMO_NARRATIVES = [
         ]
     },
     {
-        publicKey: '9Zzz8yY7xX6wW5vV4uU3tT2sS1rR0qQ9pP8oO7nN6mM5lL4kK3jJ2iI1hH0gG9fF',
-        author: 'E5gH6iJ7kL8mN9oP0qR1sT2uV3wX4yZ5aB6cD7eF8g',
+        publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm7',
+        author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2C',
         metadataUrl: 'DePIN Energy Grid Saturation',
         confidenceScore: 78,
         totalStaked: 420.0,
@@ -56,8 +56,8 @@ const DEMO_NARRATIVES = [
         ]
     },
     {
-        publicKey: '4aAb5BbC6CcD7DdE8EeF9FfG1GgH2HhI3IiJ4JjK5KkL6LlM7MmN8NnO9OoP0PpQ',
-        author: 'F6hI7jK8lM9nO0pQ1rS2tU3vW4xY5zA6bC7dE8fG9h',
+        publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm8',
+        author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2D',
         metadataUrl: 'NFT Compression Standards',
         confidenceScore: 74,
         totalStaked: 650.8,
@@ -73,8 +73,8 @@ const DEMO_NARRATIVES = [
         ]
     },
     {
-        publicKey: '5bBc6CcD7DdE8EeF9FfG0GgH1HhI2IiJ3JjK4KkL5LlM6MmN7NnO8OoP9PpQ0QqR',
-        author: 'G7iJ8kL9mN0oP1qR2sT3uV4wX5yZ6aB7cD8eF9gH0',
+        publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm9',
+        author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2E',
         metadataUrl: 'Gaming SDK Evolution',
         confidenceScore: 71,
         totalStaked: 580.3,
