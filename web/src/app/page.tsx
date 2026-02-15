@@ -78,6 +78,53 @@ export default function Home() {
                 </div>
               )}
             </div>
+            {/* Active Council Section */}
+            <section id="council" className="mt-32">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-bold tracking-[0.2em] text-accent font-serif uppercase">
+                  The Council
+                </h2>
+                <div className="h-px flex-1 bg-gradient-to-r from-accent/50 to-transparent ml-6" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {[
+                  { name: 'Pythia', role: 'Idea Validator', status: 'Online', color: 'text-primary' },
+                  { name: 'Argos', role: 'Social Watcher', status: 'Scanning', color: 'text-secondary-light' },
+                  { name: 'Helios', role: 'On-Chain Monitor', status: 'Indexing', color: 'text-orange-400' },
+                  { name: 'Athena', role: 'Strategy Synthesis', status: 'Computing', color: 'text-blue-400' }
+                ].map((agent) => (
+                  <div key={agent.name} className="glass p-6 rounded-xl flex items-center justify-between group hover:border-white/20 transition-all">
+                    <div>
+                      <h3 className={`font-bold ${agent.color} text-lg`}>{agent.name}</h3>
+                      <p className="text-xs text-text-muted uppercase tracking-wider">{agent.role}</p>
+                    </div>
+                    <div className="relative">
+                      <div className={`w-3 h-3 rounded-full ${agent.status === 'Online' ? 'bg-green-500 shadow-[0_0_10px_#22c55e]' : 'bg-primary/50 animate-pulse'}`} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Recent Proofs Section */}
+            <section id="proof" className="mt-20 mb-20">
+              <div className="glass rounded-xl p-1 overflow-hidden relative">
+                <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
+                <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
+
+                <div className="flex gap-12 py-4 animate-marquee whitespace-nowrap">
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm font-mono text-text-muted opacity-50">
+                      <span className="text-primary">●</span>
+                      <span>Block {254000000 + i * 142}</span>
+                      <span className="text-xs text-text-secondary">PROVED</span>
+                      <span className="text-xs opacity-30">0x{Math.random().toString(16).slice(2, 10)}...</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
           </>
         )}
       </main>
@@ -95,6 +142,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }
