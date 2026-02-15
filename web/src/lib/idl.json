@@ -1,0 +1,154 @@
+{
+  "address": "8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm5",
+  "metadata": {
+    "name": "narrative_oracle",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "register_narrative",
+      "discriminator": [
+        79,
+        217,
+        236,
+        159,
+        2,
+        155,
+        5,
+        205
+      ],
+      "accounts": [
+        {
+          "name": "narrative",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  114,
+                  114,
+                  97,
+                  116,
+                  105,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "author"
+              },
+              {
+                "kind": "arg",
+                "path": "metadata_url"
+              }
+            ]
+          }
+        },
+        {
+          "name": "author",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "metadata_url",
+          "type": "string"
+        },
+        {
+          "name": "confidence_score",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "validate_narrative",
+      "discriminator": [
+        53,
+        92,
+        172,
+        254,
+        123,
+        93,
+        83,
+        56
+      ],
+      "accounts": [
+        {
+          "name": "narrative",
+          "writable": true
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Narrative",
+      "discriminator": [
+        131,
+        140,
+        118,
+        93,
+        145,
+        186,
+        229,
+        64
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Narrative",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "author",
+            "type": "pubkey"
+          },
+          {
+            "name": "metadata_url",
+            "type": "string"
+          },
+          {
+            "name": "confidence_score",
+            "type": "u16"
+          },
+          {
+            "name": "total_staked",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

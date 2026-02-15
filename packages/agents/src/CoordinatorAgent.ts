@@ -65,8 +65,39 @@ export class CoordinatorAgent {
     async registerOnChain(title: string, confidence: number): Promise<string> {
         console.log(`Registering narrative on-chain: ${title}`);
 
-        // This is a placeholder for the actual Anchor instruction call
-        // we'll implement the full Anchor client interaction in the next step
-        return "TransactionSignaturePlaceholder";
+        try {
+            const idl = require('./idl.json');
+            const provider = new anchor.AnchorProvider(
+                this.connection,
+                new anchor.Wallet(this.wallet),
+                { commitment: 'confirmed' }
+            );
+            const program = new anchor.Program(idl, provider);
+
+            // Derive PDA
+            const [narrativePda] = PublicKey.findProgramAddressSync(
+                [
+                    Buffer.from('narrative'),
+                    this.wallet.publicKey.toBuffer(),
+                    Buffer.from(title)
+                ],
+                this.programId
+            );
+
+            const tx = await program.methods
+                .registerNarrative(title, confidence)
+                .accounts({
+                    narrative: narrativePda,
+                    author: this.wallet.publicKey,
+                    systemProgram: anchor.web3.SystemProgram.programId,
+                } as any)
+                .rpc();
+
+            console.log(`Successfully registered narrative: ${tx}`);
+            return tx;
+        } catch (error) {
+            console.error('Error registering narrative on-chain:', error);
+            throw error;
+        }
     }
 }
