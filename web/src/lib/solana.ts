@@ -24,7 +24,7 @@ export async function getAllNarratives(connection: Connection): Promise<Narrativ
     try {
         const accounts = await program.account.narrative.all();
 
-        return accounts.map(acc => ({
+        return accounts.map((acc: any) => ({
             publicKey: acc.publicKey,
             author: acc.account.author,
             metadataUrl: acc.account.metadataUrl,
