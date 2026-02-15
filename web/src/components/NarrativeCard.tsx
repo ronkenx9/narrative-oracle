@@ -141,25 +141,41 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
                     </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex gap-2 p-3 bg-surface-elevated/50 rounded-temple border border-border/50">
-                    <div className="flex-1 flex items-center bg-surface rounded-lg px-3 border border-border focus-within:border-primary/50 transition-colors">
-                        <span className="text-xs text-primary font-mono mr-2">SOL</span>
-                        <input
-                            type="number"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            className="w-full bg-transparent text-sm py-2 focus:outline-none font-mono"
-                            step="0.1"
-                        />
+                {/* Actions Row: Stake & Share */}
+                <div className="flex gap-2">
+                    {/* Staking Controls */}
+                    <div className="flex-1 flex gap-2 p-3 bg-surface-elevated/50 rounded-temple border border-border/50">
+                        <div className="flex-1 flex items-center bg-surface rounded-lg px-3 border border-border focus-within:border-primary/50 transition-colors">
+                            <span className="text-xs text-primary font-mono mr-2">SOL</span>
+                            <input
+                                type="number"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                className="w-full bg-transparent text-sm py-2 focus:outline-none font-mono"
+                                step="0.1"
+                            />
+                        </div>
+                        <button
+                            onClick={handleStake}
+                            disabled={isStaking}
+                            className="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg text-sm font-bold tracking-wide uppercase transition-all disabled:opacity-50 hover:shadow-oracle"
+                        >
+                            {isStaking ? '...' : 'Stake'}
+                        </button>
                     </div>
-                    <button
-                        onClick={handleStake}
-                        disabled={isStaking}
-                        className="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg text-sm font-bold tracking-wide uppercase transition-all disabled:opacity-50 hover:shadow-oracle"
+
+                    {/* Share Blink Button */}
+                    <a
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🔮 Validating "${narrative.metadataUrl}" on Narrative Oracle.\n\nConfidence: ${narrative.confidenceScore}%\n\nStake on the truth via @solana Blinks: `)}&url=${encodeURIComponent(`https://dial.to/?action=solana-action:${typeof window !== 'undefined' ? window.location.origin : 'https://narrative-oracle.com'}/api/actions/narrative/${narrative.publicKey.toBase58()}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 bg-black/40 hover:bg-black/60 border border-white/10 rounded-temple flex items-center justify-center transition-colors group/share"
+                        title="Share Blink on X"
                     >
-                        {isStaking ? '...' : 'Stake'}
-                    </button>
+                        <svg className="w-5 h-5 text-white/70 group-hover/share:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
 
