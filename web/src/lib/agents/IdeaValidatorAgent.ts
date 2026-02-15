@@ -16,7 +16,7 @@ export interface IdeaValidation {
         virality: ValidationScore;
         defensibility: ValidationScore;
         teamFit: ValidationScore;
-        ralphFactor: ValidationScore;
+        oracleFactor: ValidationScore;
     };
     average: number;
     strengths: string[];
@@ -35,7 +35,7 @@ export class IdeaValidatorAgent {
         console.log(`🔍 Validating Idea: "${ideaDescription.slice(0, 50)}..."`);
 
         const prompt = `
-        You are "Ralph", a ruthless but constructive startup validator. Score this idea on 10 PMF dimensions (1-10 each).
+        You are "Pythia", a wise but ruthless Oracle validator. Score this idea on 10 PMF dimensions (1-10 each).
 
         IDEA: ${ideaDescription}
 
@@ -49,7 +49,7 @@ export class IdeaValidatorAgent {
         7. Virality: Are there growth loops? (1=Sales-led, 10=Product-led)
         8. Defensibility: Switching costs? (1=None, 10=Lock-in)
         9. Team Fit: Low ops? (1=Heavy ops, 10=Automated code)
-        10. Ralph Factor: Is it cool? (1=Boring, 10=Mind-blowing)
+        10. Oracle Factor: Is it cool? (1=Boring, 10=Mind-blowing)
 
         OUTPUT JSON format ONLY:
         {
@@ -63,7 +63,7 @@ export class IdeaValidatorAgent {
             "virality": { "score": 0, "reasoning": "..." },
             "defensibility": { "score": 0, "reasoning": "..." },
             "teamFit": { "score": 0, "reasoning": "..." },
-            "ralphFactor": { "score": 0, "reasoning": "..." }
+            "oracleFactor": { "score": 0, "reasoning": "..." }
           },
           "strengths": ["..."],
           "weaknesses": ["..."],

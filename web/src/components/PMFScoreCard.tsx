@@ -25,7 +25,7 @@ const DimensionRow = ({ label, data }: { label: string, data: ValidationScore })
 
 export const PMFScoreCard: React.FC<PMFScoreCardProps> = ({ validation }) => {
     const { scores } = validation;
-    const ralphFactor = scores.ralphFactor;
+    const oracleFactor = scores.oracleFactor;
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
@@ -54,10 +54,10 @@ export const PMFScoreCard: React.FC<PMFScoreCardProps> = ({ validation }) => {
                     <div className="absolute inset-0 bg-marble-texture opacity-20" />
                     <div className="relative z-10">
                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-primary font-bold tracking-[0.2em] uppercase">Ralph Factor</span>
-                            <span className="text-2xl font-bold text-primary animate-pulse">{ralphFactor.score}/10</span>
+                            <span className="text-primary font-bold tracking-[0.2em] uppercase">Oracle Factor</span>
+                            <span className="text-2xl font-bold text-primary animate-pulse">{oracleFactor.score}/10</span>
                         </div>
-                        <p className="text-sm text-text-primary italic">"{ralphFactor.reasoning}"</p>
+                        <p className="text-sm text-text-primary italic">"{oracleFactor.reasoning}"</p>
                     </div>
                 </div>
             </div>

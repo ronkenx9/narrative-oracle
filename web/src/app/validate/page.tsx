@@ -27,7 +27,7 @@ export default function ValidatePage() {
             setResult(data);
         } catch (error) {
             console.error(error);
-            alert('Ralph is offline. Check your connection.');
+            alert('The Oracle is offline. Check your connection.');
         } finally {
             setLoading(false);
         }
