@@ -8,15 +8,6 @@ import {
 } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 
-// Polyfill Buffer for the browser (Wallet Adapter/Anchor Requirement)
-if (typeof window !== 'undefined' && !window.Buffer) {
-    const { Buffer } = require('buffer');
-    window.Buffer = Buffer;
-}
-
-// Default styles
-require('@solana/wallet-adapter-react-ui/styles.css');
-
 export const SolanaProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     const [mounted, setMounted] = useState(false);
 
@@ -30,10 +21,10 @@ export const SolanaProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
     return (
         <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
+            <WalletProvider wallets={wallets} autoConnect={false}>
                 <WalletModalProvider>
-                    {/* Only render children after mount to avoid hydration mismatch and context errors */}
-                    {mounted ? children : <div className="opacity-0">{children}</div>}
+                    {/* Strict gate for React 19 / Next.js 16 context safety */}
+                    {mounted ? children : null}
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
