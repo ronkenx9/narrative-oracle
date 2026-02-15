@@ -107,6 +107,40 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
                     </div>
                 </div>
 
+                {/* 10/10 Feature: Build Ideas */}
+                <div className="mb-6 p-4 bg-surface rounded-xl border border-border/50">
+                    <h4 className="text-xs font-bold text-secondary-light uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <span className="text-lg">⚡</span> Generated Opportunities
+                    </h4>
+                    <ul className="space-y-2">
+                        {narrative.buildIdeas.map((idea, i) => (
+                            <li key={i} className="text-xs text-text-secondary flex gap-2">
+                                <span className="text-primary/50 font-mono">0{i + 1}</span>
+                                {idea}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* 10/10 Feature: On-Chain Proof */}
+                <div className="mb-6 flex justify-between items-center text-[10px] text-text-muted border-t border-border/30 pt-4">
+                    <div className="flex flex-col">
+                        <span className="uppercase tracking-wider opacity-50">Timestamp</span>
+                        <span className="font-mono text-text-primary">{new Date(narrative.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex flex-col text-right">
+                        <span className="uppercase tracking-wider opacity-50">Proof</span>
+                        <a
+                            href={`https://explorer.solana.com/address/${narrative.publicKey.toBase58()}?cluster=devnet`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-primary hover:text-primary-light underline decoration-primary/30 underline-offset-2 transition-colors"
+                        >
+                            View on Explorer ↗
+                        </a>
+                    </div>
+                </div>
+
                 {/* Actions */}
                 <div className="flex gap-2 p-3 bg-surface-elevated/50 rounded-temple border border-border/50">
                     <div className="flex-1 flex items-center bg-surface rounded-lg px-3 border border-border focus-within:border-primary/50 transition-colors">
