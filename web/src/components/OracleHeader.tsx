@@ -47,8 +47,8 @@ export const OracleHeader = () => {
 
                 <div className="flex items-center gap-4">
                     {mounted && (
-                        <div className="wallet-adapter-dropdown">
-                            <WalletMultiButton className="!bg-surface-elevated !border !border-primary/30 !rounded-temple !h-10 !text-sm !font-mono !text-primary hover:!bg-primary/10 hover:!border-primary transition-all !px-6" />
+                        <div className="hidden">
+                            {/* Wallet button removed per user request for demo */}
                         </div>
                     )}
                 </div>

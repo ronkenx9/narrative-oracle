@@ -20,26 +20,33 @@ export class NarrativeOrchestrator {
     async detectNarratives() {
         console.log('\n🔮 NARRATIVE ORACLE - DETECTION STARTED\n');
 
-        // Gather all signals in parallel
-        const [reportSignals, githubSignals, communitySignals] = await Promise.all([
+        // Gather all signals in parallel (resiliently)
+        const results = await Promise.allSettled([
             this.reports.detectSignals(),
             this.github.detectSignals(),
             this.community.detectSignals()
         ]);
 
-        // const communitySignals: any[] = []; // Skipping community for now
+        const reportSignals = results[0].status === 'fulfilled' ? results[0].value : [];
+        const githubSignals = results[1].status === 'fulfilled' ? results[1].value : [];
+        const communitySignals = results[2].status === 'fulfilled' ? results[2].value : [];
+
+        if (results[0].status === 'rejected') console.error('[Orchestrator] Reports Agent failed:', results[0].reason);
+        if (results[1].status === 'rejected') console.error('[Orchestrator] GitHub Agent failed:', results[1].reason);
+        if (results[2].status === 'rejected') console.warn('[Orchestrator] Community Agent warning (skipping):', results[2].reason.message);
 
         console.log('\n📊 SIGNAL SUMMARY:');
         console.log(`Reports: ${reportSignals.length}`);
         console.log(`GitHub: ${githubSignals.length}`);
-        console.log(`Community: ${communitySignals.length} (Skipped)`);
+        console.log(`Community: ${communitySignals.length}`);
         console.log(`Total: ${reportSignals.length + githubSignals.length + communitySignals.length}\n`);
 
         // Synthesize into narratives
+        // OPTIMIZATION: Slice to top 10 signals to speed up GLM-5 inference for demo
         const narratives = await this.synthesis.synthesize({
-            reports: reportSignals,
-            github: githubSignals,
-            community: communitySignals
+            reports: reportSignals.slice(0, 5),
+            github: githubSignals.slice(0, 10),
+            community: communitySignals.slice(0, 5)
         });
 
         console.log('\n✅ DETECTION COMPLETE\n');

@@ -29,7 +29,8 @@ export class AutomatedSynthesis {
     private ollama: OllamaAdapter;
 
     constructor() {
-        this.ollama = new OllamaAdapter({ model: process.env.OLLAMA_MODEL || 'llama3' });
+        // Use the model that is actually installed: glm-5:cloud
+        this.ollama = new OllamaAdapter({ model: process.env.OLLAMA_MODEL || 'glm-5:cloud' });
     }
 
     async synthesize(signals: {
@@ -86,7 +87,6 @@ Return JSON array.
     `;
 
         const response = await this.ollama.generate({
-            model: 'glm-5', // Will fallback to what's available
             prompt,
             format: 'json'
         });
@@ -173,7 +173,6 @@ Return JSON array of exactly 5 ideas.
     `;
 
         const response = await this.ollama.generate({
-            model: 'glm-5',
             prompt,
             format: 'json'
         });

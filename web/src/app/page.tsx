@@ -6,6 +6,60 @@ import { PublicKey } from "@solana/web3.js";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NarrativeCard } from "@/components/NarrativeCard";
 
+const MOCK_NARRATIVES = [
+  {
+    publicKey: new PublicKey('8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm5'),
+    author: new PublicKey('G2P...9x2A'),
+    metadataUrl: 'The Rise of Sovereign AI Agents',
+    confidenceScore: 92,
+    totalStaked: 1450.5,
+    bump: 254,
+    timestamp: new Date().toISOString(),
+    signature: '5KMz...9x2A',
+    buildIdeas: [
+      'Decentralized Compute Marketplace for Agents',
+      'Agent-to-Agent Payment Channels',
+      'Reputation Scoring Protocol for AI',
+      'Sovereign Personal Data Vaults',
+      'AI-Governed DAOs'
+    ]
+  },
+  {
+    publicKey: new PublicKey('3Xx...Mockkw'),
+    author: new PublicKey('D4...Mock'),
+    metadataUrl: 'Solana Mobile Stack v2 Explosion',
+    confidenceScore: 85,
+    totalStaked: 890.2,
+    bump: 253,
+    timestamp: new Date(Date.now() - 3600000).toISOString(),
+    signature: '2Xy...Mock',
+    buildIdeas: [
+      'Mobile-First NFT Marketplace',
+      'SMS-based Crypto Payments',
+      'AR Wallet for Saga Phone',
+      'Gesture-based DeFi Trading',
+      'Mobile Gaming SDK'
+    ]
+  },
+  {
+    publicKey: new PublicKey('9Zz...Mock'),
+    author: new PublicKey('E5...Mock'),
+    metadataUrl: 'DePIN Energy Grid Saturation',
+    confidenceScore: 78,
+    totalStaked: 420.0,
+    bump: 252,
+    timestamp: new Date(Date.now() - 7200000).toISOString(),
+    signature: '7Wz...Mock',
+    buildIdeas: [
+      'P2P Energy Trading Platform',
+      'Smart Meter Oracle',
+      'Carbon Credit Tokenization',
+      'Grid Balancing Algorithms',
+      'Home Battery Optimization'
+    ]
+  }
+];
+
 export default function Home() {
   const [narratives, setNarratives] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,19 +67,35 @@ export default function Home() {
 
   const fetchNarratives = async () => {
     try {
-      const res = await fetch('/api/narratives');
+      // 5-second timeout for the API call
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const res = await fetch('/api/narratives', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const data = await res.json();
-        // Hydrate PublicKey strings back to objects
-        const hydratedData = data.map((n: any) => ({
-          ...n,
-          publicKey: new PublicKey(n.publicKey),
-          author: new PublicKey(n.author),
-        }));
-        setNarratives(hydratedData);
+
+        if (Array.isArray(data) && data.length > 0) {
+          // Hydrate PublicKey strings back to objects
+          const hydratedData = data.map((n: any) => ({
+            ...n,
+            publicKey: new PublicKey(n.publicKey),
+            author: new PublicKey(n.author),
+          }));
+          setNarratives(hydratedData);
+          setLoading(false);
+          return;
+        }
       }
+
+      // If we get here, API failed or returned empty. Use mocks.
+      throw new Error('No data from API');
+
     } catch (error) {
-      console.error('Error fetching narratives:', error);
+      console.warn('API unavailable or empty, using Pantheon Mocks:', error);
+      setNarratives(MOCK_NARRATIVES);
     } finally {
       setLoading(false);
     }

@@ -16,6 +16,8 @@ export class OllamaAdapter {
     constructor(options: OllamaOptions) {
         this.model = options.model;
         this.baseUrl = options.baseUrl || 'http://localhost:11434';
+        // Default to glm-5:cloud if not specified
+        this.model = options.model || 'glm-5:cloud';
     }
 
     /**
