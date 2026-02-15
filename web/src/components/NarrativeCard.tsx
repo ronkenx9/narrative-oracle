@@ -33,7 +33,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
             const tx = await program.methods
                 .validateNarrative(new anchor.BN(parseFloat(amount) * 1e9))
                 .accounts({
-                    narrative: narrative.publicKey,
+                    narrative: new PublicKey(narrative.publicKey.toString()),
                     signer: publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
                 } as any)
@@ -85,7 +85,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
 
                 <div className="mb-6 text-xs text-text-muted flex gap-2">
                     <span className="uppercase tracking-wider">Oracle ID:</span>
-                    <span className="font-mono text-secondary-light">{narrative.publicKey.toBase58().slice(0, 8)}</span>
+                    <span className="font-mono text-secondary-light">{narrative.publicKey.toString().slice(0, 8)}</span>
                 </div>
 
                 {/* Prediction Market Bar */}
@@ -131,7 +131,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
                     <div className="flex flex-col text-right">
                         <span className="uppercase tracking-wider opacity-50">Proof</span>
                         <a
-                            href={`https://explorer.solana.com/address/${narrative.publicKey.toBase58()}?cluster=devnet`}
+                            href={`https://explorer.solana.com/address/${narrative.publicKey.toString()}?cluster=devnet`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-mono text-primary hover:text-primary-light underline decoration-primary/30 underline-offset-2 transition-colors"
@@ -166,7 +166,7 @@ export const NarrativeCard: React.FC<NarrativeCardProps> = ({ narrative, onUpdat
 
                     {/* Share Blink Button */}
                     <a
-                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🔮 Validating "${narrative.metadataUrl}" on Narrative Oracle.\n\nConfidence: ${narrative.confidenceScore}%\n\nStake on the truth via @solana Blinks: `)}&url=${encodeURIComponent(`https://dial.to/?action=solana-action:${typeof window !== 'undefined' ? window.location.origin : 'https://narrative-oracle.com'}/api/actions/narrative/${narrative.publicKey.toBase58()}`)}`}
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🔮 Validating "${narrative.metadataUrl}" on Narrative Oracle.\n\nConfidence: ${narrative.confidenceScore}%\n\nStake on the truth via @solana Blinks: `)}&url=${encodeURIComponent(`https://dial.to/?action=solana-action:${typeof window !== 'undefined' ? window.location.origin : 'https://narrative-oracle.com'}/api/actions/narrative/${narrative.publicKey.toString()}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-3 bg-black/40 hover:bg-black/60 border border-white/10 rounded-temple flex items-center justify-center transition-colors group/share"

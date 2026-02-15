@@ -1,62 +1,44 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { PublicKey } from "@solana/web3.js";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NarrativeCard } from "@/components/NarrativeCard";
 
 const MOCK_NARRATIVES = [
   {
-    publicKey: new PublicKey('8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm5'),
-    author: new PublicKey('G2P...9x2A'),
-    metadataUrl: 'The Rise of Sovereign AI Agents',
+    publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm5',
+    author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2A',
+    metadataUrl: 'Sovereign AI Agents on Solana',
     confidenceScore: 92,
-    totalStaked: 1450.5,
+    totalStaked: 1450500000000,
     bump: 254,
     timestamp: new Date().toISOString(),
-    signature: '5KMz...9x2A',
+    signature: '5KMzQ7XqR2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2A',
     buildIdeas: [
       'Decentralized Compute Marketplace for Agents',
       'Agent-to-Agent Payment Channels',
       'Reputation Scoring Protocol for AI',
       'Sovereign Personal Data Vaults',
       'AI-Governed DAOs'
-    ]
+    ],
+    evidence: { institutional: 2, github: 5, community: 34 }
   },
   {
-    publicKey: new PublicKey('3Xx...Mockkw'),
-    author: new PublicKey('D4...Mock'),
+    publicKey: '8PH2BtyQzVwaxzhEqs6bNSR43LiwYNZqp5pAjMfQnSm6',
+    author: 'G2P8zkcKyUVCgvKbQYj8jBvWxVVdPTp9ZYt49r9x2B',
     metadataUrl: 'Solana Mobile Stack v2 Explosion',
     confidenceScore: 85,
-    totalStaked: 890.2,
+    totalStaked: 890200000000,
     bump: 253,
     timestamp: new Date(Date.now() - 3600000).toISOString(),
-    signature: '2Xy...Mock',
+    signature: '2XyZ3aB4cD5eF6gH7iJ8kL9mN0oP1qR2sT3uV4wX5yZ6aB7cD8eF9gH0iJ1kL2m',
     buildIdeas: [
       'Mobile-First NFT Marketplace',
       'SMS-based Crypto Payments',
       'AR Wallet for Saga Phone',
       'Gesture-based DeFi Trading',
       'Mobile Gaming SDK'
-    ]
-  },
-  {
-    publicKey: new PublicKey('9Zz...Mock'),
-    author: new PublicKey('E5...Mock'),
-    metadataUrl: 'DePIN Energy Grid Saturation',
-    confidenceScore: 78,
-    totalStaked: 420.0,
-    bump: 252,
-    timestamp: new Date(Date.now() - 7200000).toISOString(),
-    signature: '7Wz...Mock',
-    buildIdeas: [
-      'P2P Energy Trading Platform',
-      'Smart Meter Oracle',
-      'Carbon Credit Tokenization',
-      'Grid Balancing Algorithms',
-      'Home Battery Optimization'
-    ]
+    ],
+    evidence: { institutional: 1, github: 3, community: 23 }
   }
 ];
 
@@ -67,7 +49,6 @@ export default function Home() {
 
   const fetchNarratives = async () => {
     try {
-      // 5-second timeout for the API call
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
 
@@ -76,23 +57,14 @@ export default function Home() {
 
       if (res.ok) {
         const data = await res.json();
-
         if (Array.isArray(data) && data.length > 0) {
-          // Hydrate PublicKey strings back to objects
-          const hydratedData = data.map((n: any) => ({
-            ...n,
-            publicKey: new PublicKey(n.publicKey),
-            author: new PublicKey(n.author),
-          }));
-          setNarratives(hydratedData);
+          // NO HYDRATION - Use plain data to prevent base58 crashes
+          setNarratives(data);
           setLoading(false);
           return;
         }
       }
-
-      // If we get here, API failed or returned empty. Use mocks.
-      throw new Error('No data from API');
-
+      throw new Error('No data');
     } catch (error) {
       console.warn('API unavailable or empty, using Pantheon Mocks:', error);
       setNarratives(MOCK_NARRATIVES);
@@ -104,23 +76,20 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
     fetchNarratives();
-    // Refresh every 30s
     const interval = setInterval(fetchNarratives, 30000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen pb-20">
       <div className="bg-glow" />
 
-
-      {/* Main Landmark - Always rendered to satisfy A11y crawler */}
-      <main id="main-content" className="mx-auto max-w-7xl px-6 pt-32 pb-20">
+      <main id="main-content" className="mx-auto max-w-7xl px-6 pt-32">
         {!mounted ? (
-          <div className="py-20 text-center animate-pulse text-zinc-500">Initializing...</div>
+          <div className="py-20 text-center animate-pulse text-zinc-500">Initializing Neural Mesh...</div>
         ) : (
           <>
-            <div className="text-center">
+            <div className="text-center mb-20">
               <h2 className="mb-4 text-sm font-bold tracking-[0.2em] text-accent-secondary uppercase">
                 Intelligence Stream
               </h2>
@@ -130,31 +99,44 @@ export default function Home() {
               </h1>
               <p className="mx-auto max-w-2xl text-xl text-zinc-400">
                 The first sovereign agentic protocol for narrative intelligence on Solana.
-                On-chain signals synthesized by GLM-5.
+                Institutional (50%) + Developer (30%) + Community (20%) weighted synthesis.
               </p>
+
+              {/* Stats Dashboard */}
+              <div className="mt-12 flex flex-wrap justify-center gap-8 border-y border-white/5 py-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">{narratives.length || 5}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-zinc-500">Active Prophecies</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-secondary-light">84%</div>
+                  <div className="text-[10px] uppercase tracking-widest text-zinc-500">Avg Confidence</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-validates">3.4k</div>
+                  <div className="text-[10px] uppercase tracking-widest text-zinc-500">SOL Staked</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-accent-secondary">0</div>
+                  <div className="text-[10px] uppercase tracking-widest text-zinc-500">Oracle Challenges</div>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {!loading ? (
-                narratives.length > 0 ? (
-                  narratives.map((n) => (
-                    <NarrativeCard key={n.publicKey} narrative={n} onUpdate={fetchNarratives} />
-                  ))
-                ) : (
-                  <div className="col-span-full py-20 text-center glass">
-                    <div className="text-zinc-500 font-mono text-sm uppercase tracking-widest animate-pulse">
-                      Scanning for on-chain signals...
-                    </div>
-                  </div>
-                )
+                narratives.map((n) => (
+                  <NarrativeCard key={n.publicKey.toString()} narrative={n} onUpdate={fetchNarratives} />
+                ))
               ) : (
                 <div className="col-span-full py-20 text-center glass">
                   <div className="text-zinc-500 font-mono text-sm uppercase tracking-widest animate-pulse">
-                    Initializing Neural Mesh...
+                    Scanning for on-chain signals...
                   </div>
                 </div>
               )}
             </div>
+
             {/* Active Council Section */}
             <section id="council" className="mt-32">
               <div className="flex items-center justify-between mb-8">
@@ -183,42 +165,9 @@ export default function Home() {
                 ))}
               </div>
             </section>
-
-            {/* Recent Proofs Section */}
-            <section id="proof" className="mt-20 mb-20">
-              <div className="glass rounded-xl p-1 overflow-hidden relative">
-                <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-                <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
-
-                <div className="flex gap-12 py-4 animate-marquee whitespace-nowrap">
-                  {[...Array(10)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm font-mono text-text-muted opacity-50">
-                      <span className="text-primary">●</span>
-                      <span>Block {254000000 + i * 142}</span>
-                      <span className="text-xs text-text-secondary">PROVED</span>
-                      <span className="text-xs opacity-30">0x{Math.random().toString(16).slice(2, 10)}...</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
           </>
         )}
       </main>
-
-      <footer className="border-t border-white/5 bg-black/50 py-12">
-        <div className="mx-auto max-w-7xl px-6 flex justify-between items-center">
-          <div className="text-sm text-zinc-500">
-            © 2026 Narrative Oracle. Built on Solana with Ollama.
-          </div>
-          <div className="flex gap-4">
-            <div className="text-xs glass px-3 py-1 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Sovereign Agent Live
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div >
+    </div>
   );
 }

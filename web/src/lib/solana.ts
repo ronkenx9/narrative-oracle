@@ -5,8 +5,8 @@ import idl from './idl.json';
 const PROGRAM_ID = new PublicKey(idl.address);
 
 export interface Narrative {
-    publicKey: PublicKey;
-    author: PublicKey;
+    publicKey: any; // Allow string or PublicKey for hydration safety
+    author: any;
     metadataUrl: string;
     confidenceScore: number;
     totalStaked: number;
